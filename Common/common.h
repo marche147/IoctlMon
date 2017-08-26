@@ -1,0 +1,49 @@
+/*!
+ * \file common.h
+ * \date 2017/08/22 3:05
+ *
+ * \author marche147
+ * Contact: bitmarche@gmail.com
+ *
+ * \brief 
+ *
+ * usermode & kernel common include file
+ *
+ * \note
+*/
+
+#ifndef _COMMON_H
+#define _COMMON_H
+
+#define IOCTLMON_DEVICE_NAME L"\\Device\\IoctlMon"
+#define IOCTLMON_DOSDEVICE_NAME L"\\DosDevices\\IoctlMon"
+#define IOCTLMON_FILE_NAME TEXT("\\\\.\\IoctlMon")
+
+#ifndef CTL_CODE
+#define CTL_CODE( DeviceType, Function, Method, Access ) (                 \
+    ((DeviceType) << 16) | ((Access) << 14) | ((Function) << 2) | (Method) \
+)
+#endif
+
+typedef struct _IO_LOG_INFO {
+	BOOLEAN Async;
+	CHAR ProcessName[16];
+	ULONG IoControlCode;
+	ULONG InputBufferLength;
+	ULONG OutputBufferLength;
+} IO_LOG_INFO, *PIO_LOG_INFO;
+
+typedef struct _IO_LOG_DATA {
+	PVOID InputBuffer;
+	PVOID OutputBuffer;
+} IO_LOG_DATA, *PIO_LOG_DATA;
+
+#define IOCTL_IM_SET_CAPTURED_PID CTL_CODE(FILE_DEVICE_UNKNOWN, 0, METHOD_BUFFERED, FILE_READ_ACCESS | FILE_WRITE_ACCESS)
+#define IOCTL_IM_SET_CAPTURED_DEVICE CTL_CODE(FILE_DEVICE_UNKNOWN, 1, METHOD_BUFFERED, FILE_READ_ACCESS | FILE_WRITE_ACCESS)
+#define IOCTL_IM_SET_MONITOR_ACTIVE CTL_CODE(FILE_DEVICE_UNKNOWN, 2, METHOD_BUFFERED, FILE_READ_ACCESS | FILE_WRITE_ACCESS)
+#define IOCTL_IM_GET_CURRENT_LOG_COUNT CTL_CODE(FILE_DEVICE_UNKNOWN, 3, METHOD_BUFFERED, FILE_READ_ACCESS | FILE_WRITE_ACCESS)
+#define IOCTL_IM_GET_FIRST_LOG_INFO CTL_CODE(FILE_DEVICE_UNKNOWN, 4, METHOD_BUFFERED, FILE_READ_ACCESS | FILE_WRITE_ACCESS)
+#define IOCTL_IM_GET_FIRST_LOG_DATA CTL_CODE(FILE_DEVICE_UNKNOWN, 5, METHOD_BUFFERED, FILE_READ_ACCESS | FILE_WRITE_ACCESS)
+#define IOCTL_IM_REMOVE_FIRST_LOG CTL_CODE(FILE_DEVICE_UNKNOWN, 6, METHOD_BUFFERED, FILE_READ_ACCESS | FILE_WRITE_ACCESS)
+
+#endif
